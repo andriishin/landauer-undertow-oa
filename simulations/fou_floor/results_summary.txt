@@ -1,0 +1,38 @@
+=== iter-007 sim2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ===
+Direct spectral generation of the stationary fOU:
+  circulant eigenvalues = folded discrete PSD S(w)~|w|^{1-2H}/(lambda^2+w^2)
+  (>=0 by construction -> PD embedding, ZERO clipping);
+  Davies-Harte from those eigenvalues (numpy.fft only);
+  target gamma = inverse DFT of the eigenvalues (exact, valid to lag M/2).
+Far-tail exponent of rho^2 = 2 beta read from the EXACT covariance;
+empirical-ACF exponent (accessible window) with bootstrap CI.
+k = 8, K = 56, tau_E = 200.0, M_bits = 400
+c_target = 0.3, theory floor 1-c = 0.700
+T_total = 20000, path_len = 32768, circulant M = 65536, N_runs = 40, seed = 20260527, n_fold = 6
+total runtime 61.8s
+
+FLOOR (C2 carrying result):
+    H   floor_emp     liminf      min_eig    n_neg
+  0.3      0.7000     0.7000    4.333e-01        0
+  0.5      0.7000     0.7000    2.422e-01        0
+  0.7      0.7000     0.7000    1.425e-01        0
+  0.9      0.7000     0.7000    8.639e-02        0
+
+floor spread across H: 0.0000 (min 0.7000, max 0.7000) -- floor invariance
+
+DRIFT-RATE EXPONENT 4(1-H) (H>1/2), from EXACT fOU covariance:
+    H   analytic     [8,40]tauE    [20,80]tauE   near[1,8]tauE         emp-ACF[1,8] (CI)
+  0.3      (exp)              -              -               -  rate 6.708e-04
+  0.5      (exp)              -              -               -  rate 4.068e-03
+  0.7      1.200          1.237          1.201           1.624  2.436 [2.36,2.52]
+  0.9      0.400          0.406          0.385           0.458  1.398 [1.37,1.43]
+
+OUTCOME (a): on the CORRECT stationary fOU the analytic exponent 4(1-H) IS
+recovered from the process covariance in the FAR window (Delta >= 8 tau_E):
+H=0.7 -> 1.24 / 1.20 on [8,40]/[20,80] tau_E (analytic 1.20);
+H=0.9 -> 0.41 / 0.39 (analytic 0.40). It is NOT isolated in the original
+[tau_E,8tau_E] window (OU corner: 1.62/0.46) nor by the finite-sample
+sample-ACF estimator (estimator bias at large lags: 2.44/1.40). 4(1-H)
+is thus an ASYMPTOTIC far-tail exponent of the TRUE fOU -- confirmed on
+the correct process; the iter-006 failure was the AR(1) o fGn SURROGATE,
+not the theory. Floor depth 1-c invariant (0.700 for all H, spread 0).

@@ -1,0 +1,155 @@
+{
+  "experiment": "iter-002 sim4 superlinear_memory: phase boundary (Theorem 3)",
+  "k": 8,
+  "K_params": 56,
+  "tau_E": 200.0,
+  "M0": 100.0,
+  "alphas": [
+    1.0,
+    1.5,
+    2.0,
+    3.0
+  ],
+  "kappa_tauE": [
+    0.1,
+    0.5,
+    1.0
+  ],
+  "T_total": 20000,
+  "fit_t_min": 2000.0,
+  "seed": 20260529,
+  "total_runtime_s": 0.002998828887939453,
+  "polynomial": [
+    {
+      "alpha": 1.0,
+      "gamma": 0.9999999999999994,
+      "expected_gamma": 1.0,
+      "phi_times_t": 200.0,
+      "expected_prefactor": 200.0,
+      "nu_final": 0.99
+    },
+    {
+      "alpha": 1.5,
+      "gamma": 0.9907818999884547,
+      "expected_gamma": 1.0,
+      "phi_times_t": 297.62535512808813,
+      "expected_prefactor": 300.0,
+      "nu_final": 0.9850375627355538
+    },
+    {
+      "alpha": 2.0,
+      "gamma": 0.9816376556017071,
+      "expected_gamma": 1.0,
+      "phi_times_t": 393.7010752806556,
+      "expected_prefactor": 400.0,
+      "nu_final": 0.9801
+    },
+    {
+      "alpha": 3.0,
+      "gamma": 0.9635705304285698,
+      "expected_gamma": 1.0,
+      "phi_times_t": 581.3016146585583,
+      "expected_prefactor": 600.0,
+      "nu_final": 0.970299
+    }
+  ],
+  "exponential": [
+    {
+      "kappa_tauE": 0.1,
+      "phi_inf": 0.09516258196404048,
+      "nu_inf": 0.9048374180359595,
+      "E_grow_ratio_T": 19920.40774389232
+    },
+    {
+      "kappa_tauE": 0.5,
+      "phi_inf": 0.3934693402873666,
+      "nu_inf": 0.6065306597126334,
+      "E_grow_ratio_T": 3.13683097645777e+21
+    },
+    {
+      "kappa_tauE": 1.0,
+      "phi_inf": 0.6321205588285577,
+      "nu_inf": 0.36787944117144233,
+      "E_grow_ratio_T": 9.839708574865009e+42
+    }
+  ],
+  "gamma_independent_of_alpha": true,
+  "gamma_window_convergence": {
+    "note": "Deterministic closed-form tabulation of phi = 1 - ((t-tau_E)/t)^alpha (NOT Monte Carlo; RNG never seeded). Each window is one decade [w, 10*w]; w=2e3 reproduces the baseline fit. gamma -> 1 monotonically for every alpha as the window slides right => the baseline drift below 1 is a subleading finite-window artifact, the leading exponent is identically 1, so there is no polynomial alpha_c.",
+    "alphas": [
+      1.0,
+      1.5,
+      2.0,
+      3.0
+    ],
+    "windows": [
+      {
+        "t_min": 2000.0,
+        "gamma": {
+          "1.0": 0.9999999999999999,
+          "1.5": 0.9907411383933277,
+          "2.0": 0.9815568311521582,
+          "3.0": 0.9634116724017445
+        }
+      },
+      {
+        "t_min": 20000.0,
+        "gamma": {
+          "1.0": 0.9999999999999993,
+          "1.5": 0.9990965752952473,
+          "2.0": 0.9981938416139655,
+          "3.0": 0.9963904473040789
+        }
+      },
+      {
+        "t_min": 200000.0,
+        "gamma": {
+          "1.0": 1.0000000000000124,
+          "1.5": 0.999909874258082,
+          "2.0": 0.9998197553754455,
+          "3.0": 0.9996395381880394
+        }
+      },
+      {
+        "t_min": 2000000.0,
+        "gamma": {
+          "1.0": 1.0000000000000762,
+          "1.5": 0.9999909895855934,
+          "2.0": 0.999981979239793,
+          "3.0": 0.9999639587535322
+        }
+      }
+    ],
+    "slope_alpha": 3.0,
+    "local_loglog_slopes": [
+      {
+        "t": 2000.0,
+        "slope": -0.8966789660727711
+      },
+      {
+        "t": 20000.0,
+        "slope": -0.9899666677572784
+      },
+      {
+        "t": 200000.0,
+        "slope": -0.9989996661209434
+      },
+      {
+        "t": 2000000.0,
+        "slope": -0.9998999972209421
+      },
+      {
+        "t": 20000000.0,
+        "slope": -0.9999899590808261
+      },
+      {
+        "t": 200000000.0,
+        "slope": -0.9999990373034141
+      },
+      {
+        "t": 2000000000.0,
+        "slope": -1.0000001731859094
+      }
+    ]
+  }
+}

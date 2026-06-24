@@ -1,0 +1,59 @@
+This repository accompanies the article
+"The Nostalgic Undertow: The Inevitability of Memory Obsolescence in
+Non-Stationary Landauer Regimes".
+
+==============================================================================
+TEXT, FIGURES, AND DATA
+==============================================================================
+
+The manuscript (paper/main.md, paper/main.ru.md), supplementary
+material (paper/supplementary.md, paper/supplementary.ru.md), the
+bibliography (paper/refs.bib), the figures (paper/figs/), and the
+prose, READMEs, and result/output files under simulations/
+(results_summary.{txt,json}, run.log) are licensed under the
+
+    Creative Commons Attribution 4.0 International License (CC BY 4.0).
+
+SPDX-License-Identifier: CC-BY-4.0
+Full legal code: https://creativecommons.org/licenses/by/4.0/legalcode
+Human-readable summary: https://creativecommons.org/licenses/by/4.0/
+
+You are free to share and adapt this material for any purpose, even
+commercially, provided you give appropriate credit, provide a link to
+the license, and indicate if changes were made.
+
+==============================================================================
+SOURCE CODE
+==============================================================================
+
+The Python source code under simulations/ (the *.py files) is
+licensed separately under the MIT License; see simulations/LICENSE.
+
+SPDX-License-Identifier: MIT
+
+==============================================================================
+THIRD-PARTY MATERIAL (NOT COVERED BY THE LICENSES ABOVE)
+==============================================================================
+
+paper/iopart.cls, paper/iopart10.clo, paper/iopart12.clo,
+paper/iopams.sty and paper/setstack.sty are the IOP Publishing LaTeX
+author class pack. These are the property of IOP Publishing and are
+redistributed under IOP Publishing's standard author terms for use with
+their journal templates. They are NOT covered by the CC-BY-4.0 or MIT
+licenses above; for any reuse outside the scope of preparing an IOP
+Publishing submission, refer to IOP Publishing's terms or download the
+template directly from
+https://publishingsupport.iopscience.iop.org/questions/latex-template/.
+The bibliography style iopart-num is part of the same pack and ships
+with TeX Live.
+
+The .tex files (paper/main.tex, paper/main.ru.tex,
+paper/supplementary.tex, paper/supplementary.ru.tex) are generated from
+the corresponding .md sources and reuse IOP template macros; the prose
+and equations within them remain under CC-BY-4.0 as part of the
+manuscript. The compiled PDFs are the rendered manuscript under
+CC-BY-4.0.
+
+==============================================================================
+
+Copyright (c) 2026 Alexander Andriishin.

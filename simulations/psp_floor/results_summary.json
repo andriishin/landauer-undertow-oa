@@ -1,0 +1,84 @@
+{
+  "experiment": "iter-002 sim3 psp_floor: REALISED-reset nostalgia floor for Poisson reset (Theorem 2)",
+  "method": "Poisson reset streams simulated per coordinate; nu(t), floor and decorrelation rate read from realised bit survival (no closed-form re-fit)",
+  "k": 8,
+  "K_params": 56,
+  "mus": [
+    0.001,
+    0.003,
+    0.01
+  ],
+  "c_target": 0.3,
+  "floor_theory": 0.7,
+  "T_total": 20000,
+  "n_runs": 40,
+  "M_bits": 400,
+  "seed": 20260528,
+  "total_runtime_s": 26.325188159942627,
+  "results": [
+    {
+      "mu": 0.001,
+      "tau_E": 1000.0,
+      "floor_empirical": 0.7127125,
+      "liminf_empirical": 0.6982499999999998,
+      "rate_fit": {
+        "ok": true,
+        "value": 0.0010102873153700314,
+        "ci95": [
+          0.0009845421152508203,
+          0.0010386045443765682
+        ],
+        "fit_window": [
+          0.0,
+          3334.0
+        ],
+        "nominal_mu": 0.001,
+        "n_boot": 400
+      },
+      "runtime_s": 5.052382230758667
+    },
+    {
+      "mu": 0.003,
+      "tau_E": 333.3333333333333,
+      "floor_empirical": 0.7092475,
+      "liminf_empirical": 0.6920624999999999,
+      "rate_fit": {
+        "ok": true,
+        "value": 0.003014824103734202,
+        "ci95": [
+          0.002978421045090651,
+          0.0030510527366653644
+        ],
+        "fit_window": [
+          0.0,
+          1112.0
+        ],
+        "nominal_mu": 0.003,
+        "n_boot": 400
+      },
+      "runtime_s": 7.329989910125732
+    },
+    {
+      "mu": 0.01,
+      "tau_E": 100.0,
+      "floor_empirical": 0.7092575000000001,
+      "liminf_empirical": 0.6916874999999999,
+      "rate_fit": {
+        "ok": true,
+        "value": 0.010016849048990684,
+        "ci95": [
+          0.009953777911459403,
+          0.010085221610338806
+        ],
+        "fit_window": [
+          0.0,
+          334.0
+        ],
+        "nominal_mu": 0.01,
+        "n_boot": 400
+      },
+      "runtime_s": 13.935759782791138
+    }
+  ],
+  "floor_spread": 0.0034649999999999403
+}

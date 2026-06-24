@@ -1,0 +1,347 @@
+{
+  "experiment": "iter-007 sim2 fou_floor: EXACT stationary fOU -- floor (C2) and drift-rate exponent 4(1-H) from direct spectral generation",
+  "method": "circulant eigenvalues = folded discrete fOU PSD S(w)~|w|^{1-2H}/(lambda^2+w^2) (>=0 by construction, zero clipping); Davies-Harte from eigenvalues (numpy.fft); target gamma = IDFT of eigenvalues; far-tail exponent from exact covariance; empirical-ACF exponent with bootstrap CI",
+  "k": 8,
+  "K_params": 56,
+  "hursts": [
+    0.3,
+    0.5,
+    0.7,
+    0.9
+  ],
+  "tau_E": 200.0,
+  "lambda": 0.005,
+  "c_target": 0.3,
+  "floor_theory": 0.7,
+  "T_total": 20000,
+  "path_len": 32768,
+  "circulant_M": 65536,
+  "n_fold": 6,
+  "n_runs": 40,
+  "M_bits": 400,
+  "seed": 20260527,
+  "near_window_tauE": [
+    1.0,
+    8.0
+  ],
+  "far_windows_tauE": [
+    [
+      8.0,
+      40.0
+    ],
+    [
+      20.0,
+      80.0
+    ]
+  ],
+  "total_runtime_s": 61.83207607269287,
+  "results": [
+    {
+      "H": 0.3,
+      "floor_empirical": 0.6999999999999996,
+      "liminf_empirical": 0.6999999999999995,
+      "runtime_s": 13.685633420944214,
+      "embed_info": {
+        "embed_size": 65536,
+        "min_eig": 0.4332610697498255,
+        "n_neg": 0
+      },
+      "process_exponents": {},
+      "empirical_acf_fit": {
+        "ok": true,
+        "kind": "exponential",
+        "value": 0.0006707919931751357,
+        "ci95": [
+          0.0005009770902970956,
+          0.000823050447928218
+        ],
+        "window": [
+          200.0,
+          1600.0
+        ],
+        "n_boot": 400
+      },
+      "cov_control": [
+        {
+          "lag": 10,
+          "gamma": 0.8188341358181538,
+          "rho_emp": 0.8165050678261061,
+          "rel_err": 0.0028443709016554137
+        },
+        {
+          "lag": 50,
+          "gamma": 0.5390190593884367,
+          "rho_emp": 0.5370254599547878,
+          "rel_err": 0.003698569457288398
+        },
+        {
+          "lag": 100,
+          "gamma": 0.34556217336578743,
+          "rho_emp": 0.3384405240464132,
+          "rel_err": 0.020608879812857445
+        },
+        {
+          "lag": 200,
+          "gamma": 0.13875745209599377,
+          "rho_emp": 0.1331072320508056,
+          "rel_err": 0.040720119309766316
+        },
+        {
+          "lag": 400,
+          "gamma": -0.004575412304269127,
+          "rho_emp": -0.001419425705686673,
+          "rel_err": 0.689770822591641
+        },
+        {
+          "lag": 800,
+          "gamma": -0.0339400015162817,
+          "rho_emp": -0.03254512774994351,
+          "rel_err": 0.04109822224288413
+        }
+      ]
+    },
+    {
+      "H": 0.5,
+      "floor_empirical": 0.6999999999999996,
+      "liminf_empirical": 0.6999999999999995,
+      "runtime_s": 16.371118545532227,
+      "embed_info": {
+        "embed_size": 65536,
+        "min_eig": 0.24217493984703775,
+        "n_neg": 0
+      },
+      "process_exponents": {},
+      "empirical_acf_fit": {
+        "ok": true,
+        "kind": "exponential",
+        "value": 0.004068210784168647,
+        "ci95": [
+          0.00381980921746135,
+          0.00435473408362193
+        ],
+        "window": [
+          200.0,
+          1600.0
+        ],
+        "n_boot": 400
+      },
+      "cov_control": [
+        {
+          "lag": 10,
+          "gamma": 0.951303567568534,
+          "rho_emp": 0.9505075080113221,
+          "rel_err": 0.0008368091779679875
+        },
+        {
+          "lag": 50,
+          "gamma": 0.7788614870089174,
+          "rho_emp": 0.7768067539245237,
+          "rel_err": 0.0026381238718664437
+        },
+        {
+          "lag": 100,
+          "gamma": 0.6065779360064727,
+          "rho_emp": 0.6044494416906898,
+          "rel_err": 0.00350902033510686
+        },
+        {
+          "lag": 200,
+          "gamma": 0.3679081156964655,
+          "rho_emp": 0.3666197311620701,
+          "rel_err": 0.0035019192997537097
+        },
+        {
+          "lag": 400,
+          "gamma": 0.13534583200512984,
+          "rho_emp": 0.1348002124927366,
+          "rel_err": 0.004031298934578623
+        },
+        {
+          "lag": 800,
+          "gamma": 0.018317066509242107,
+          "rho_emp": 0.019982039482568725,
+          "rel_err": 0.09089735420184125
+        }
+      ]
+    },
+    {
+      "H": 0.7,
+      "floor_empirical": 0.6999999999999996,
+      "liminf_empirical": 0.6999999999999995,
+      "runtime_s": 16.05156111717224,
+      "embed_info": {
+        "embed_size": 65536,
+        "min_eig": 0.14246714878226202,
+        "n_neg": 0
+      },
+      "process_exponents": {
+        "[8,40]tauE": {
+          "exponent": 1.2371026858011849,
+          "n_points": 6401,
+          "window": [
+            1600.0,
+            8000.0
+          ]
+        },
+        "[20,80]tauE": {
+          "exponent": 1.2010678672072033,
+          "n_points": 12001,
+          "window": [
+            4000.0,
+            16000.0
+          ]
+        },
+        "[1,8]tauE_near": {
+          "exponent": 1.6236739217061467,
+          "window": [
+            200.0,
+            1600.0
+          ]
+        }
+      },
+      "empirical_acf_fit": {
+        "ok": true,
+        "kind": "power",
+        "value": 2.435634266204152,
+        "ci95": [
+          2.3629118706433685,
+          2.5219178784413057
+        ],
+        "window": [
+          200.0,
+          1600.0
+        ],
+        "n_boot": 400,
+        "expected_exponent": 1.2000000000000002
+      },
+      "cov_control": [
+        {
+          "lag": 10,
+          "gamma": 0.9890848685242312,
+          "rho_emp": 0.9879271229869185,
+          "rel_err": 0.0011705219369795078
+        },
+        {
+          "lag": 50,
+          "gamma": 0.9147884973800676,
+          "rho_emp": 0.906205653187676,
+          "rel_err": 0.009382326305578143
+        },
+        {
+          "lag": 100,
+          "gamma": 0.8128113289810692,
+          "rho_emp": 0.7950653008360525,
+          "rel_err": 0.021832899580066144
+        },
+        {
+          "lag": 200,
+          "gamma": 0.6345222078771738,
+          "rho_emp": 0.6012275480904201,
+          "rel_err": 0.05247201645734462
+        },
+        {
+          "lag": 400,
+          "gamma": 0.40432654797127915,
+          "rho_emp": 0.3512133685772518,
+          "rel_err": 0.1313620872266791
+        },
+        {
+          "lag": 800,
+          "gamma": 0.2205896393614737,
+          "rho_emp": 0.1417795685659122,
+          "rel_err": 0.357270045258779
+        }
+      ]
+    },
+    {
+      "H": 0.9,
+      "floor_empirical": 0.6999999999999996,
+      "liminf_empirical": 0.6999999999999995,
+      "runtime_s": 15.714246034622192,
+      "embed_info": {
+        "embed_size": 65536,
+        "min_eig": 0.08638551315860593,
+        "n_neg": 0
+      },
+      "process_exponents": {
+        "[8,40]tauE": {
+          "exponent": 0.4058636654259176,
+          "n_points": 6401,
+          "window": [
+            1600.0,
+            8000.0
+          ]
+        },
+        "[20,80]tauE": {
+          "exponent": 0.38547274521619407,
+          "n_points": 12001,
+          "window": [
+            4000.0,
+            16000.0
+          ]
+        },
+        "[1,8]tauE_near": {
+          "exponent": 0.4581760881499342,
+          "window": [
+            200.0,
+            1600.0
+          ]
+        }
+      },
+      "empirical_acf_fit": {
+        "ok": true,
+        "kind": "power",
+        "value": 1.3977618751653273,
+        "ci95": [
+          1.369707240629901,
+          1.4254468711481796
+        ],
+        "window": [
+          200.0,
+          1600.0
+        ],
+        "n_boot": 400,
+        "expected_exponent": 0.3999999999999999
+      },
+      "cov_control": [
+        {
+          "lag": 10,
+          "gamma": 0.9985236268250496,
+          "rho_emp": 0.9972219591359479,
+          "rel_err": 0.001303592276466126
+        },
+        {
+          "lag": 50,
+          "gamma": 0.9817943052816397,
+          "rho_emp": 0.9662513879423817,
+          "rel_err": 0.0158311341182287
+        },
+        {
+          "lag": 100,
+          "gamma": 0.9519063608580127,
+          "rho_emp": 0.911500271375807,
+          "rel_err": 0.042447546419731474
+        },
+        {
+          "lag": 200,
+          "gamma": 0.8876352092783325,
+          "rho_emp": 0.7944398377153191,
+          "rel_err": 0.10499287374347223
+        },
+        {
+          "lag": 400,
+          "gamma": 0.7815549688174455,
+          "rho_emp": 0.598445927594003,
+          "rel_err": 0.2342881157370324
+        },
+        {
+          "lag": 800,
+          "gamma": 0.6620463423222884,
+          "rho_emp": 0.3758589470086115,
+          "rel_err": 0.4322769821180918
+        }
+      ]
+    }
+  ],
+  "floor_spread": 0.0
+}

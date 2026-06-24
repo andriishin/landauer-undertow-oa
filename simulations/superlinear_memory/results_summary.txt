@@ -1,0 +1,47 @@
+=== iter-002 sim4: superlinear_memory -- phase boundary (Theorem 3) ===
+k = 8, K = 56, tau_E = 200.0, M0 = 100.0
+T_total = 20000, fit window t >= 2000.0, seed = 20260529
+total runtime 0.0s
+
+--- Polynomial growth |M| = M0 t^alpha (FIFO) ---
+ alpha     gamma  expected      phi*t  alpha*tauE     nu(T)
+   1.0    1.0000     1.000     200.00         200    0.9900
+   1.5    0.9908     1.000     297.63         300    0.9850
+   2.0    0.9816     1.000     393.70         400    0.9801
+   3.0    0.9636     1.000     581.30         600    0.9703
+
+gamma values: [1.0, 0.9908, 0.9816, 0.9636] -- INDEPENDENT of alpha (spread 0.0364); gamma = 1 for every finite alpha => NO polynomial alpha_c.
+nu(t) -> 1 (saturation) for all polynomial alpha.
+
+--- gamma window-convergence check (exact phi, deterministic) ---
+Closed-form phi = 1 - ((t-tau_E)/t)^alpha tabulated on a log grid
+(NOT Monte Carlo; RNG never seeded). Each window is one decade
+[w, 10*w]; w=2e3 reproduces the baseline gamma to 3 s.f.
+  fit window      a=1.0    a=1.5    a=2.0    a=3.0
+    t>=2e+03     1.0000   0.9907   0.9816   0.9634
+    t>=2e+04     1.0000   0.9991   0.9982   0.9964
+    t>=2e+05     1.0000   0.9999   0.9998   0.9996
+    t>=2e+06     1.0000   1.0000   1.0000   1.0000
+
+gamma -> 1 MONOTONICALLY for every alpha as the window slides right:
+the baseline drift of gamma below 1 (down to 0.964 at alpha=3) is a
+subleading finite-window artifact, NOT an alpha-dependence. The leading
+decay exponent is identically 1 => NO polynomial escape threshold alpha_c.
+
+Local log-log slope of exact phi at alpha=3 (leading exponent identically 1):
+  t=2e+03: slope=-0.8967
+  t=2e+04: slope=-0.9900
+  t=2e+05: slope=-0.9990
+  t=2e+06: slope=-0.9999
+  t=2e+07: slope=-1.0000
+  t=2e+08: slope=-1.0000
+  t=2e+09: slope=-1.0000
+(-0.90 at t=2e3 -> -1.0000 by t>=2e7: the drift vanishes as t grows.)
+
+--- Exponential growth |M| = M0 e^{kappa t} (escape regime) ---
+ kappa*tauE    phi_inf    nu_inf   E_grow(T)/E_grow(0)
+        0.1     0.0952    0.9048             1.992e+04
+        0.5     0.3935    0.6065             3.137e+21
+        1.0     0.6321    0.3679             9.840e+42
+
+phi_inf > 0 (escape: nu held below 1) but E_grow(t) ∝ e^{kappa t} diverges => eta_L -> 0 through the denominator.
