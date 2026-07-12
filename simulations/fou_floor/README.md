@@ -14,8 +14,9 @@ analytic distorted). This discrepancy is a **wrong-process artefact**: a clean
 test needs **direct generation of the stationary fOU**.
 
 **Here the latent is generated as the *exact* stationary fOU**, spectrally, and
-the analytic exponent `4(1−H)` **is recovered** on it (in the far tail). The
-discrepancy was a property of the AR(1)∘fGn surrogate, not of the theory.
+the analytic exponent `4(1−H)` **is recovered** on it (in the far tail). Any
+exponent mismatch from the naive AR(1)∘fGn surrogate is a wrong-process
+artefact, not a property of the theory.
 
 ## Method (exact stationary fOU, numpy.fft only — no scipy)
 
@@ -133,9 +134,10 @@ proof is § S2.)
 So `4(1−H)` is an **asymptotic far-tail exponent of the true fOU**: recovered on
 the correct process, but only in a far window and from the process covariance
 (which the paths embody by construction), not from the sample ACF in the near
-window. This **upgrades C2**: the **depth `1 − c` is proven** (Theorem 2) and the
-**exponent `4(1−H)` is now confirmed on the correct process**. The discrepancy
-was a property of the AR(1)∘fGn **surrogate**, not of the theory.
+window. C2 thus rests on two results: the **depth `1 − c` is proven** (Theorem 2)
+and the **exponent `4(1−H)` is confirmed** on the exact stationary fOU. A naive
+AR(1)∘fGn surrogate would not resolve it — a wrong-process artefact, not a
+property of the theory.
 
 ### Honest caveats
 
@@ -152,8 +154,8 @@ was a property of the AR(1)∘fGn **surrogate**, not of the theory.
   `H=0.7`); it converges to `4(1−H)` only once `Δ ≳ 8 τ_E`. This mirrors the
   finite-window transience of C1 (§ 7): the analytic value is asymptotic and not
   isolated on the smallest window — but, crucially, it *is* isolated on the
-  correct process in a far enough window, which was impossible with the AR(1)∘fGn
-  surrogate at any window.
+  correct process in a far enough window, which a naive AR(1)∘fGn surrogate would
+  not resolve at any window.
 - `H = 0.9` lies in the **long-memory range `H ≥ 3/4` that the strict Theorem 2
   does not cover** (`∫β ds` diverges, § S2.2); the floor there is a numerically
   supported conjecture only, and the exponent converges more slowly (the

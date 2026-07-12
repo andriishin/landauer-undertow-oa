@@ -1,0 +1,73 @@
+=== superlinear_noncirc: non-circular nu^theor plateau at the C1 floor ===
+
+MODEL: K independent coordinates,
+  X_{t+1} = theta_t X_t + w_t,  w ~ N(0,q)                (state)
+  theta_{t+1} = (1-lambda) theta_t + u_t, u ~ N(0,sigma^2)  (OU drift)
+theta is the transition coupling, observed only multiplicatively via the
+state pair (X_t,X_{t+1}); per-step Fisher info about theta_t is X_t^2/q.
+A growing FIFO memory |M(t)|=M0 t^alpha retains the most recent pairs; the
+learner forms a REAL joint Gaussian (Kalman/RLS) posterior over the CURRENT
+theta_t (older retained pairs down-weighted by OU forgetting tau_f~1/lambda).
+NON-CIRCULAR: multiple fresh snapshots of the same coordinate JOINTLY
+concentrate the estimate to Sigma_inf; there is NO per-bit age gate.
+
+PARAMETERS: K=56, lambda=0.1, sigma^2=0.002, q=1.0, T=100000, R=48, seed=20260527
+  M0=100.0, alpha in [1.0, 1.5, 2.0, 3.0], tau_E=10; tau (numerical) = 1 (recommended tau=1)
+  sigma0^2: cont=0.010000, disc(exact)=0.010526, measured=0.010540
+  plateau averaged over t >= 10000
+
+--- MEASURED Fisher rate and analytic C1 floor ---
+I_rate (measured E[X^2]/q) = 1.02223
+eps_track = I_rate sigma^2/lambda^2 = 0.20445
+nu_C1 (cont, paper headline (2/eps)(sqrt(1+eps)-1)) = 0.95353   [~1-eps/4 = 0.94889]
+nu_C1 (discrete brackets): posterior root 0.94852, predicted root 0.95830
+Sigma_inf: cont 0.009535, disc-post 0.009984, disc-pred 0.010087
+
+--- MEASURED nu^theor PLATEAU (KEY RESULT): three non-circular measures ---
+All three measure nostalgia = 1 - I_pred^floor/I_pred^opt with theta known;
+they differ only in the (sub-leading) Fisher X^2-weighting of the currency.
+(i)   nu_varratio (PRIMARY) = E[(theta-theta_hat)^2]/E[theta^2] = 0.96280
+      This IS the paper's nu_C1=Sigma_inf/sigma0^2 (S1.3 leading order,
+      Fisher cancels).  vs nu_C1_cont 0.9535 (+0.97%), vs nu_C1_disc_pred 0.9583 (+0.47%)
+(ii)  nu_predinfo (literal task E[D_KL]/I_opt(MI)) = 0.96999  (+1.73% vs nu_C1_cont)
+(iii) nu_fullwtd (fully X^2-weighted) = 0.94649  (-0.74% vs nu_C1_cont)
+      (iii) sits ~1.6% below nu_C1: it RETAINS the design-error
+      anticorrelation (the adaptive filter tracks better exactly when X_t^2
+      is large) that the closed-form nu_C1 drops -- a real sub-leading effect.
+flatness (primary): slope d(nu)/d(ln t) = +1.24e-03; plateau halves 0.9619 / 0.9637
+nu^theor is EXACTLY alpha-independent: |M(t)|=M0 t^alpha >= t for every
+alpha>=1, so the FIFO retains the full history and the joint posterior is
+identical for all alpha (per-alpha window==full history, verified).
+
+--- Sigma_hat reaches the FLOOR (not zero) ---
+Sigma_hat plateau = 0.010100; realized MSE = 0.010147; Sigma_pred(disc) = 0.010087
+=> the learner reaches Sigma_inf, NOT 0: stale memory beyond tau_conc does
+not lower the tracking error (the drifted-out past is uninformative).
+
+--- I_pred^opt (non-degenerate) ---
+I_pred^opt: wtd 5.489138e-03, MI 5.355785e-03, leading 1/2 sig0^2 5.269751e-03
+
+--- SANITY CONTROLS ---
+(a) no-memory (theta_hat=0): nu = 1.000 (exact) -- reproduces the artifact
+    single-snapshot (one pair): nu = 0.9920 (~1)
+(b) oracle (theta_hat=theta): nu = 0.000 (exact)
+
+--- DIVERGENCE: naive per-bit majorant vs real nu^theor ---
+ alpha   nu_naive(T)  eta_v(T)/eta_v(t_lo)
+   1.0        0.9999             2.671e-01
+   1.5        0.9999             8.659e-02
+   2.0        0.9998             2.807e-02
+   3.0        0.9997             2.950e-03
+The naive per-bit majorant nu_naive=1-phi -> 1 for every alpha (the OLD
+circular threshold result), diverging from the real nu^theor plateau at
+nu_C1=0.9628; and eta_v=I_pred/I_mem -> 0.
+
+--- VALIDATION (PASS/FAIL) ---
+  (1) nu^theor plateaus & matches nu_C1 : PASS
+  (2) Sigma_hat -> Sigma_inf (not 0)    : PASS
+  (3a) single-snapshot nu -> ~1         : PASS
+  (3b) oracle nu -> 0                   : PASS
+  (4) nu_naive rises toward 1           : PASS
+  (5) I_pred^opt > 0                    : PASS
+
+VERDICT: ALL PASS: growing-memory nu^theor PLATEAUS at the C1 floor nu_C1 < 1 (alpha-independent), matching the analytic Sigma_inf/sigma0^2; Sigma_hat reaches the floor (not 0); the naive per-bit majorant nu_naive rises toward 1 -- the divergence is the headline, confirming that the ->1 of the old threshold model is the circular artifact.

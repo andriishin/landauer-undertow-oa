@@ -1,5 +1,5 @@
 {
-  "experiment": "iter-002 sim4 superlinear_memory: phase boundary (Theorem 3)",
+  "experiment": "sim4 superlinear_memory: phase boundary (Theorem 3)",
   "k": 8,
   "K_params": 56,
   "tau_E": 200.0,
@@ -18,7 +18,7 @@
   "T_total": 20000,
   "fit_t_min": 2000.0,
   "seed": 20260529,
-  "total_runtime_s": 0.002998828887939453,
+  "total_runtime_s": 0.00550079345703125,
   "polynomial": [
     {
       "alpha": 1.0,
@@ -58,19 +58,22 @@
       "kappa_tauE": 0.1,
       "phi_inf": 0.09516258196404048,
       "nu_inf": 0.9048374180359595,
-      "E_grow_ratio_T": 19920.40774389232
+      "M_ratio_T": 19920.40774389232,
+      "eta_ratio_T": 5.0199775670084077e-05
     },
     {
       "kappa_tauE": 0.5,
       "phi_inf": 0.3934693402873666,
       "nu_inf": 0.6065306597126334,
-      "E_grow_ratio_T": 3.13683097645777e+21
+      "M_ratio_T": 3.13683097645777e+21,
+      "eta_ratio_T": 3.18793077314366e-22
     },
     {
       "kappa_tauE": 1.0,
       "phi_inf": 0.6321205588285577,
       "nu_inf": 0.36787944117144233,
-      "E_grow_ratio_T": 9.839708574865009e+42
+      "M_ratio_T": 9.839708574865009e+42,
+      "eta_ratio_T": 1.0162902614356331e-43
     }
   ],
   "gamma_independent_of_alpha": true,

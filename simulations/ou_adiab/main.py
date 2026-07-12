@@ -2,23 +2,22 @@
 numerically under OU drift?  (Theorem 1, contribution C1.)
 
 Article #3 (`landauer-undertow`), section 6.1 / supplementary S4.1.
-(redesigned in iter-003; tau_f -> tau_conc naming clarified in iter-008.)
 
 =============================================================================
-WHY THIS WAS REDESIGNED
+DESIGN RATIONALE: THE EXACT LINEAR-GAUSSIAN (KALMAN) TEST
 =============================================================================
-The earlier softmax-categorical chain with an EWMA/Kalman learner fitted
-A*t + B*ln(lambda*t) + C on a *fixed* window [1e3, 1e4], and reported
-B/(K/2) in {0.26 .. 0.43}, never reaching 1.  The non-equilibrium-stat-mech
-audit argued the true control parameter of TRACKING is
+The companion paper #2 [Andriishin2026b] S8.3 scanned a softmax-categorical
+chain with an EWMA/Kalman learner, fitting A*t + B*ln(lambda*t) + C on a *fixed*
+window [1e3, 1e4], and reported B/(K/2) in {0.26 .. 0.43}, never reaching 1.  A
+natural objection is that the true control parameter of TRACKING is
 
     eps_track = I_rate * sigma^2 / lambda^2          (= I_rate * eps / lambda)
 
-not eps = sigma^2/lambda, and that the scan never entered eps_track << 1, so the
-limit was simply never approached.  This redesign tests that hypothesis rigorously
-and -- crucially -- in the *exact linear-Gaussian (Kalman) setting in which
-Theorem 1 is derived* (assumption A1), so any failure is a property of the BNT
-log itself, not of a suboptimal softmax learner.
+not eps = sigma^2/lambda, and that that scan never entered eps_track << 1, so the
+limit was simply never approached.  This experiment tests that hypothesis
+rigorously and -- crucially -- in the *exact linear-Gaussian (Kalman) setting in
+which Theorem 1 is derived* (assumption A1), so any failure is a property of the
+BNT log itself, not of a suboptimal softmax learner.
 
 Model: K independent scalar OU coordinates,
     theta_t = a theta_{t-1} + w_t,  a = 1-lambda,  Var(w)=q=sigma^2,
@@ -104,7 +103,7 @@ K_HALF = K_PARAMS / 2.0                       # = 28
 LAM = 1e-2                                     # drift rate; tau_E = 1/lambda = 100
 P0_DIFFUSE = 1e6                               # diffuse prior covariance (per coord)
 N_RUNS = 40                                    # realisations (bootstrap over these)
-SEED = 20260524 + 3                            # = 20260527 (unchanged across iters)
+SEED = 20260524 + 3                            # = 20260527 (fixed for reproducibility)
 N_BOOT = 2000                                  # bootstrap resamples for B-CI
 
 # (A)/(B) use r=1.  (C) uses a SMALLER r so the asymptotic window is wide:

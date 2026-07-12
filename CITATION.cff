@@ -1,7 +1,7 @@
 cff-version: 1.2.0
 message: "If you use these materials, please cite the archived Zenodo deposit."
-title: "The Nostalgic Undertow: The Inevitability of Memory Obsolescence in Non-Stationary Landauer Regimes"
-abstract: "Open-access materials accompanying the article «The Nostalgic Undertow: The Inevitability of Memory Obsolescence in Non-Stationary Landauer Regimes»: manuscript (Russian primary, English translation), supplementary material with the full proofs, bibliography, figures, and self-contained reproducible numerical experiments (Ornstein-Uhlenbeck, fractional-OU, piecewise-stationary Poisson, and super-linear-memory Markov chains with drift). Third in the series on the Landauer efficiency of memory, after «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» and «The Non-Stationary Landauer Efficiency: Memory Growth, Informational Nostalgia, and the Thermodynamics of Learning Systems»."
+title: "The Nostalgic Undertow: The Inevitability of Memory Obsolescence in Non-Stationary Environments"
+abstract: "Open-access materials accompanying the article «The Nostalgic Undertow: The Inevitability of Memory Obsolescence in Non-Stationary Environments»: manuscript (Russian primary, English translation), supplementary material with the full proofs, bibliography, figures, and self-contained reproducible numerical experiments (Ornstein-Uhlenbeck tracking, fractional-OU and piecewise-stationary-Poisson nostalgia floors, super-linear-memory phase boundary, and a non-circular test of the nostalgia plateau at the tracking floor). Third in the series on the Landauer efficiency of memory, after «Landauer Efficiency of Self-Modeling: An Operational Scale of Vitality» and «The Non-Stationary Landauer Efficiency: Memory Growth, Informational Nostalgia, and the Thermodynamics of Learning Systems»."
 type: software
 authors:
   - family-names: Andriishin
@@ -9,16 +9,16 @@ authors:
     orcid: "https://orcid.org/0009-0000-4739-4017"
 identifiers:
   - type: doi
-    value: 10.5281/zenodo.20836705
+    value: 10.5281/zenodo.21039220
     description: "Versioned Zenodo archive of this repository"
-doi: 10.5281/zenodo.20836705
+doi: 10.5281/zenodo.21039220
 url: "https://github.com/andriishin/landauer-undertow-oa"
 repository-code: "https://github.com/andriishin/landauer-undertow-oa"
 license:
   - CC-BY-4.0
   - MIT
-date-released: "2026-06-25"
-version: "1.0.0"
+date-released: "2026-07-12"
+version: "2.0.0"
 keywords:
   - Landauer principle
   - stochastic thermodynamics

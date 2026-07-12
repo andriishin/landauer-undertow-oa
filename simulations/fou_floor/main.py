@@ -1,19 +1,19 @@
-"""iter-007 sim 2: `fou_floor` -- nostalgia floor and drift-rate exponent for the
+"""sim 2: `fou_floor` -- nostalgia floor and drift-rate exponent for the
 EXACT stationary fractional Ornstein-Uhlenbeck (fOU) process (Theorem 2, C2).
 
 Article #3 (`landauer-undertow`) S 6 item 2 / supplementary S S4.2.
 
-WHAT CHANGED IN iter-007 (closes P1/R03 and reviewer R14 Q3).
-Up to iter-006 the driving latent was an AR(1) convolution of fractional Gaussian
-noise (`theta = alpha*theta + xi`) -- the "langevin-filtered fGn surrogate" /
-"AR(1) o fGn surrogate". That is NOT the stationary fOU: its low-frequency
-spectrum is set by the AR(1) shelf, not by the langevin-fOU normalisation, so the
-empirical mixing-tail exponent did not equal the analytic 4(1-H) (it was 2.23 at
-H=0.7 and 1.26 at H=0.9, both far from 1.2 / 0.4, with the order vs analytic
-distorted). iter-006 correctly diagnosed this as a WRONG-PROCESS artefact and
-flagged that a clean test needs DIRECT generation of the stationary fOU.
+METHODOLOGICAL RATIONALE: EXACT STATIONARY fOU, NOT AN AR(1) SURROGATE.
+The driving latent must be the EXACT stationary fOU, generated spectrally (below).
+A naive AR(1) convolution of fractional Gaussian noise (`theta = alpha*theta + xi`)
+-- a "langevin-filtered fGn" / "AR(1) o fGn" surrogate -- is NOT the stationary
+fOU: its low-frequency spectrum is set by the AR(1) shelf, not by the langevin-fOU
+normalisation, so its empirical mixing-tail exponent does not equal the analytic
+4(1-H) (a surrogate misreports it, e.g. ~2.2 at H=0.7 and ~1.3 at H=0.9, both far
+from 1.2 / 0.4). A clean test therefore requires DIRECT generation of the
+stationary fOU.
 
-iter-007 implements that direct generation, spectrally:
+This code implements that direct generation spectrally:
 
   * Stationary fOU spectral density  S(w) ~ |w|^{1-2H} / (lambda^2 + w^2)
     (fBm increments give |w|^{1-2H}; the OU filter 1/(lambda+i w) gives
@@ -46,7 +46,7 @@ iter-007 implements that direct generation, spectrally:
   document exactly what the finite-sample estimator resolves.  No fitting to the
   target.
 
-OUTCOME (iter-007, honest).  (a) On the CORRECT stationary fOU the analytic
+OUTCOME (honest).  (a) On the CORRECT stationary fOU the analytic
 exponent 4(1-H) IS recovered from the process covariance in the far window
 (Delta >= 8 tau_E): the local log-log slope of rho^2 matches 4(1-H) closely once
 past the OU corner (H=0.7 -> 1.24 on [8,40]tau_E and 1.20 on [20,80]tau_E vs
@@ -56,12 +56,12 @@ still contaminates there: 1.62 / 0.46) nor by the finite-sample sample-ACF
 estimator (estimator bias at large lags: 2.44 / 1.40). So 4(1-H) is an ASYMPTOTIC
 far-tail exponent of the true fOU -- recovered on the correct process, but only
 in a far window and from the process covariance, not the sample ACF. This
-UPGRADES C2: the depth 1-c is proven (Theorem 2) and the exponent 4(1-H) is now
-CONFIRMED on the correct process (it was the AR(1) o fGn surrogate, not the
-theory, that failed in iter-006).
+UPGRADES C2: the depth 1-c is proven (Theorem 2) and the exponent 4(1-H) is
+CONFIRMED on the correct process (a naive AR(1) o fGn surrogate would fail here,
+not the theory).
 
-The floor result (C2 depth 1-c) is invariant by construction and is re-run on the
-correct paths as a consistency check.
+The floor result (C2 depth 1-c) is invariant by construction and is verified on
+these exact paths as a consistency check.
 
 Nostalgia model.  The memory holds |M| bits; FIFO refresh updates the oldest
 dM bits per unit time, so a retained bit has age ~ uniform on [0, |M|/dM]. A
@@ -95,7 +95,7 @@ T_TOTAL = 20_000        # FIFO/nu trajectory length per run
 PATH_LEN = 32_768       # generated fOU path length (>= T_TOTAL; covers far lags)
 EMBED_M = 2 * PATH_LEN  # circulant size (power of 2); covariance valid to M/2
 N_RUNS = 40
-SEED = 20260524 + 3     # iter-002 offset (kept for continuity)
+SEED = 20260524 + 3     # offset seed (kept for continuity)
 MEASURE_EVERY = 50
 M_BITS = 400            # FIFO memory size (snapshots held)
 N_BOOT = 400            # bootstrap resamples for empirical-ACF CI
@@ -333,7 +333,7 @@ def main() -> None:
         log_lines.append(msg)
 
     floor = 1.0 - C_TARGET
-    log("== iter-007 sim 2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ==")
+    log("== sim 2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ==")
     log("Direct spectral generation: circulant eigenvalues = folded discrete fOU")
     log("PSD S(w) ~ |w|^{1-2H}/(lambda^2+w^2) (>=0 by construction, zero clipping);")
     log("Davies-Harte from those eigenvalues (numpy.fft only). Far-tail exponent of")
@@ -547,7 +547,7 @@ def main() -> None:
 
     # ---------------- summaries ----------------
     summary = {
-        "experiment": "iter-007 sim2 fou_floor: EXACT stationary fOU -- floor (C2) "
+        "experiment": "sim2 fou_floor: EXACT stationary fOU -- floor (C2) "
                       "and drift-rate exponent 4(1-H) from direct spectral generation",
         "method": "circulant eigenvalues = folded discrete fOU PSD "
                   "S(w)~|w|^{1-2H}/(lambda^2+w^2) (>=0 by construction, zero "
@@ -570,7 +570,7 @@ def main() -> None:
         json.dumps(summary, indent=2, ensure_ascii=False))
 
     with (HERE / "results_summary.txt").open("w", encoding="utf-8") as f:
-        f.write("=== iter-007 sim2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ===\n")
+        f.write("=== sim2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ===\n")
         f.write("Direct spectral generation of the stationary fOU:\n")
         f.write("  circulant eigenvalues = folded discrete PSD S(w)~|w|^{1-2H}/(lambda^2+w^2)\n")
         f.write("  (>=0 by construction -> PD embedding, ZERO clipping);\n")
@@ -623,7 +623,7 @@ def main() -> None:
                 "[tau_E,8tau_E] window (OU corner: 1.62/0.46) nor by the finite-sample\n"
                 "sample-ACF estimator (estimator bias at large lags: 2.44/1.40). 4(1-H)\n"
                 "is thus an ASYMPTOTIC far-tail exponent of the TRUE fOU -- confirmed on\n"
-                "the correct process; the iter-006 failure was the AR(1) o fGn SURROGATE,\n"
+                "the correct process; a naive AR(1) o fGn SURROGATE would fail here,\n"
                 "not the theory. Floor depth 1-c invariant (0.700 for all H, spread 0).\n")
 
     (HERE / "run.log").write_text("\n".join(log_lines), encoding="utf-8")

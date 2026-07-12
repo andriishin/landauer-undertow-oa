@@ -1,4 +1,4 @@
-"""iter-002 sim 4: `superlinear_memory` -- phase boundary (Theorem 3, C3).
+"""sim 4: `superlinear_memory` -- phase boundary (Theorem 3, C3).
 
 Article #3 (`landauer-undertow`) § 5 / § 6 item 4 / supplementary § S4.4.
 
@@ -8,13 +8,20 @@ FIFO refresh. We measure:
 
   1. the fresh-bit fraction phi(t) = (|M(t)| - |M(t-tau_E)|)/|M(t)| ~ alpha*tau_E/t
      -- claim: phi(t) ~ t^{-gamma} with gamma = 1 for EVERY finite alpha (the
-     decay exponent does NOT depend on alpha), so nu(t) = 1 - phi(t) -> 1
-     (saturation; no polynomial escape threshold alpha_c);
+     decay exponent does NOT depend on alpha), so phi(t) -> 0 for every finite
+     alpha => NO finite polynomial escape threshold alpha_c. The load-bearing
+     route-closure is eta_v = I_pred/I_mem -> 0; the tabulated per-bit
+     nu = 1 - phi -> 1 is the naive/circular per-bit majorant (NOT nu^theor).
+     The true nu^theor is held at the C1 floor nu_C1 < 1, NOT -> 1;
   2. for exponential growth, phi(t) -> phi_inf > 0 (constant), nu(t) < 1
-     (escape), but the cumulative growth cost E_grow(t) ∝ e^{kappa t} diverges
-     and eta_L(t) -> 0 through the denominator.
+     (escape) -- but eta = I_pred/I_mem -> 0 STRUCTURALLY: I_pred is horizon-bounded
+     while I_mem grows with the (exponentially growing) retained capacity |M|.
 
-Direct construction with known true theta(t), so nu^theor = nu^op (S4.5).
+Direct construction with known true theta(t): the tabulated per-bit nu = 1 - phi
+is the operational per-bit majorant (circular), NOT nu^theor. The load-bearing C3
+carriers are the fresh fraction phi(t) -> 0 (=> no finite polynomial alpha_c) and
+the route-closure eta_v -> 0; the true nu^theor is held at the C1 floor
+nu_C1 < 1 (S4.5).
 """
 
 from __future__ import annotations
@@ -40,7 +47,7 @@ TAU_E = 200.0
 M0 = 100.0
 T_TOTAL = 20_000
 T_MIN_FIT = 2_000.0                # fit phi ~ t^-gamma past the transient
-SEED = 20260524 + 5                # iter-002 offset (unused; output is a
+SEED = 20260524 + 5                # offset seed (unused; output is a
                                    # deterministic closed-form tabulation of
                                    # phi = 1 - ((t-tau_E)/t)^alpha -- NOT Monte
                                    # Carlo, np.random is never called, RNG is
@@ -112,7 +119,7 @@ def main() -> None:
         print(msg, flush=True)
         log_lines.append(msg)
 
-    log("== iter-002 sim 4: superlinear_memory -- phase boundary (Theorem 3) ==")
+    log("== sim 4: superlinear_memory -- phase boundary (Theorem 3) ==")
     log(f"k = {K_STATES}, K = {K_PARAMS}, tau_E = {TAU_E}, M0 = {M0}")
     log(f"polynomial alphas = {ALPHAS}; exponential kappa*tau_E = {KAPPAS}")
     log(f"T_total = {T_TOTAL}, fit window t >= {T_MIN_FIT}, seed = {SEED}")
@@ -125,7 +132,7 @@ def main() -> None:
     poly = []
     for alpha in ALPHAS:
         phi = phi_polynomial(times, alpha, TAU_E)
-        nu = 1.0 - phi                      # nostalgia = 1 - fresh fraction
+        nu = 1.0 - phi                      # per-bit majorant nu = 1 - phi (circular, NOT nu^theor)
         # fit phi ~ t^-gamma on the tail
         mask = (times >= T_MIN_FIT) & (phi > 0)
         p = np.polyfit(np.log(times[mask]), np.log(phi[mask]), 1)
@@ -164,21 +171,23 @@ def main() -> None:
         phi_inf = 1.0 - np.exp(-kt)
         phi = np.full_like(times, phi_inf)
         nu = 1.0 - phi
-        # cumulative growth cost E_grow ∝ |M(t)| = M0 e^{kappa t}; with kappa=kt/tau_E
+        # Exponential growth escapes the nostalgia floor (phi_inf>0, nu<1), but
+        # eta = I_pred/I_mem -> 0 STRUCTURALLY: I_pred is horizon-bounded (the future
+        # is only so predictable) while I_mem grows with the retained capacity |M|.
         kappa = kt / TAU_E
-        E_grow = M0 * np.exp(kappa * times)         # ∝ cumulative bits created
-        N_max = E_grow                              # denominator dominated by E_grow
-        # eta_L ∝ I_pred / N_max; I_pred bounded (∝ fresh bits ~ phi_inf*|M|),
-        # eta_L ~ phi_inf*|M| / |M| ... but storage+grow dominate -> track 1/|M|-scaled
-        eta_L = (phi_inf * M0 * np.exp(kappa * times)) / (N_max + M0 * np.exp(kappa * times))
-        log(f"\n kappa*tau_E = {kt}: phi_inf = {phi_inf:.4f} (>0, escape); "
-            f"nu_inf = {1-phi_inf:.4f} (<1); E_grow(T)/E_grow(0) = {E_grow[-1]/E_grow[0]:.3e} "
-            f"(exponential divergence)")
+        M_size = M0 * np.exp(kappa * times)         # |M(t)|, exponential capacity
+        I_pred_bound = phi_inf * M0                 # horizon-bounded predictive info (does NOT scale with |M|)
+        I_mem = M_size                              # retained memory ~ capacity (informational, grows e^{kappa t})
+        eta = I_pred_bound / I_mem                  # = phi_inf e^{-kappa t} -> 0 (structural smallness; no energy budget)
+        log(f"\n kappa*tau_E = {kt}: phi_inf = {phi_inf:.4f} (>0, escape, nu<1); "
+            f"eta = I_pred/I_mem -> 0 structurally; eta(T)/eta(0) = {eta[-1]/eta[0]:.3e}, "
+            f"|M|(T)/|M|(0) = {M_size[-1]/M_size[0]:.3e}")
         expo.append({"kappa_tauE": kt, "phi_inf": float(phi_inf),
                      "nu_inf": float(1 - phi_inf),
-                     "E_grow_ratio_T": float(E_grow[-1] / E_grow[0]),
-                     "phi": phi.tolist(), "E_grow": E_grow.tolist(),
-                     "eta_L": eta_L.tolist()})
+                     "M_ratio_T": float(M_size[-1] / M_size[0]),
+                     "eta_ratio_T": float(eta[-1] / eta[0]),
+                     "phi": phi.tolist(), "I_mem": I_mem.tolist(),
+                     "eta": eta.tolist()})
 
     total = time.time() - t_start
     gammas = [r["gamma"] for r in poly]
@@ -209,14 +218,15 @@ def main() -> None:
     plt.close(fig)
     log("saved fig_superlinear_phi.png")
 
-    # second figure: exponential E_grow divergence and eta_L collapse
+    # second figure: exponential growth -> eta structurally tiny; polynomial
+    # phi->0 / eta_v->0 (per-bit nu=1-phi->1 is the circular majorant, not nu^theor)
     fig, axes = plt.subplots(1, 2, figsize=(13.0, 5.0))
     ax = axes[0]
     for i, r in enumerate(expo):
-        ax.semilogy(times, r["E_grow"], "-", lw=1.4,
+        ax.semilogy(times, r["eta"], "-", lw=1.4,
                     label=rf"$\kappa\tau_E={r['kappa_tauE']}$")
-    ax.set_xlabel("t"); ax.set_ylabel(r"$E_{\rm grow}(t)\propto |M(t)|$")
-    ax.set_title("Exponential escape: growth cost diverges")
+    ax.set_xlabel("t"); ax.set_ylabel(r"$\eta(t)=I_{\rm pred}/I_{\rm mem}$")
+    ax.set_title(r"Exponential growth: $\eta\to 0$ structurally ($|M|$ grows, $I_{\rm pred}$ bounded)")
     ax.grid(True, which="both", alpha=0.3); ax.legend(fontsize=8)
     ax = axes[1]
     for i, r in enumerate(poly):
@@ -224,7 +234,8 @@ def main() -> None:
     ax.axhline(1.0, color="k", ls=":", lw=1.0)
     ax.set_xscale("log")
     ax.set_xlabel("t"); ax.set_ylabel(r"$\nu(t)=1-\phi(t)$")
-    ax.set_title(r"Polynomial growth: $\nu(t)\to 1$ (saturation, no escape)")
+    ax.set_title(r"Polynomial growth: $\phi\to0$, $\eta_v\to0$ (no escape);"
+                 "\n" r"per-bit $\nu=1-\phi$ is a circular majorant, not $\nu^{\rm theor}$")
     ax.grid(True, which="both", alpha=0.3); ax.legend(fontsize=8)
     fig.tight_layout()
     fig.savefig(HERE / "fig_superlinear_escape.png", dpi=150)
@@ -233,7 +244,7 @@ def main() -> None:
 
     # ---------------- summaries ----------------
     summary = {
-        "experiment": "iter-002 sim4 superlinear_memory: phase boundary (Theorem 3)",
+        "experiment": "sim4 superlinear_memory: phase boundary (Theorem 3)",
         "k": K_STATES, "K_params": K_PARAMS, "tau_E": TAU_E, "M0": M0,
         "alphas": ALPHAS, "kappa_tauE": KAPPAS,
         "T_total": T_TOTAL, "fit_t_min": T_MIN_FIT, "seed": SEED,
@@ -241,7 +252,7 @@ def main() -> None:
         "polynomial": [{kk: vv for kk, vv in r.items()
                         if kk not in ("phi", "nu")} for r in poly],
         "exponential": [{kk: vv for kk, vv in r.items()
-                         if kk not in ("phi", "E_grow", "eta_L")} for r in expo],
+                         if kk not in ("phi", "I_mem", "eta")} for r in expo],
         "gamma_independent_of_alpha": bool(max(gammas) - min(gammas) < 0.05),
         "gamma_window_convergence": {
             "note": ("Deterministic closed-form tabulation of "
@@ -263,7 +274,7 @@ def main() -> None:
         json.dumps(summary, indent=2, ensure_ascii=False))
 
     with (HERE / "results_summary.txt").open("w", encoding="utf-8") as f:
-        f.write("=== iter-002 sim4: superlinear_memory -- phase boundary (Theorem 3) ===\n")
+        f.write("=== sim4: superlinear_memory -- phase boundary (Theorem 3) ===\n")
         f.write(f"k = {K_STATES}, K = {K_PARAMS}, tau_E = {TAU_E}, M0 = {M0}\n")
         f.write(f"T_total = {T_TOTAL}, fit window t >= {T_MIN_FIT}, seed = {SEED}\n")
         f.write(f"total runtime {total:.1f}s\n\n")
@@ -277,7 +288,10 @@ def main() -> None:
         f.write(f"\ngamma values: {[round(g,4) for g in gammas]} -- "
                 f"INDEPENDENT of alpha (spread {max(gammas)-min(gammas):.4f}); "
                 f"gamma = 1 for every finite alpha => NO polynomial alpha_c.\n")
-        f.write("nu(t) -> 1 (saturation) for all polynomial alpha.\n\n")
+        f.write("fresh fraction phi(t) -> 0 => no finite polynomial alpha_c; route\n"
+                "closed by eta_v = I_pred/I_mem -> 0. The tabulated per-bit nu = 1 - phi\n"
+                "-> 1 is the naive/circular per-bit majorant, NOT nu^theor; the true\n"
+                "nu^theor is held at the C1 floor nu_C1 < 1 (NOT -> 1).\n\n")
         f.write("--- gamma window-convergence check (exact phi, deterministic) ---\n")
         f.write("Closed-form phi = 1 - ((t-tau_E)/t)^alpha tabulated on a log grid\n")
         f.write("(NOT Monte Carlo; RNG never seeded). Each window is one decade\n")
@@ -297,12 +311,14 @@ def main() -> None:
         f.write("(-0.90 at t=2e3 -> -1.0000 by t>=2e7: the drift vanishes as t grows.)\n\n")
         f.write("--- Exponential growth |M| = M0 e^{kappa t} (escape regime) ---\n")
         f.write(f"{'kappa*tauE':>11s}  {'phi_inf':>9s}  {'nu_inf':>8s}  "
-                f"{'E_grow(T)/E_grow(0)':>20s}\n")
+                f"{'|M|(T)/|M|(0)':>16s}  {'eta(T)/eta(0)':>14s}\n")
         for r in expo:
             f.write(f"{r['kappa_tauE']:>11}  {r['phi_inf']:>9.4f}  "
-                    f"{r['nu_inf']:>8.4f}  {r['E_grow_ratio_T']:>20.3e}\n")
-        f.write("\nphi_inf > 0 (escape: nu held below 1) but E_grow(t) ∝ e^{kappa t} "
-                "diverges => eta_L -> 0 through the denominator.\n")
+                    f"{r['nu_inf']:>8.4f}  {r['M_ratio_T']:>16.3e}  {r['eta_ratio_T']:>14.3e}\n")
+        f.write("\nphi_inf > 0 (exponential growth escapes the nostalgia floor: nu < 1),\n"
+                "but eta = I_pred/I_mem -> 0 STRUCTURALLY: I_pred is horizon-bounded while\n"
+                "I_mem grows with the retained capacity |M| proportional to e^{kappa t}.\n"
+                "This is the structural smallness of eta, NOT an energy-budget collapse.\n")
 
     (HERE / "run.log").write_text("\n".join(log_lines), encoding="utf-8")
     print("\nwrote results_summary.{txt,json}, run.log, figures")

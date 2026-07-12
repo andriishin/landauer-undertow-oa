@@ -1,5 +1,5 @@
 {
-  "experiment": "iter-007 sim2 fou_floor: EXACT stationary fOU -- floor (C2) and drift-rate exponent 4(1-H) from direct spectral generation",
+  "experiment": "sim2 fou_floor: EXACT stationary fOU -- floor (C2) and drift-rate exponent 4(1-H) from direct spectral generation",
   "method": "circulant eigenvalues = folded discrete fOU PSD S(w)~|w|^{1-2H}/(lambda^2+w^2) (>=0 by construction, zero clipping); Davies-Harte from eigenvalues (numpy.fft); target gamma = IDFT of eigenvalues; far-tail exponent from exact covariance; empirical-ACF exponent with bootstrap CI",
   "k": 8,
   "K_params": 56,
@@ -34,13 +34,13 @@
       80.0
     ]
   ],
-  "total_runtime_s": 61.83207607269287,
+  "total_runtime_s": 63.47886919975281,
   "results": [
     {
       "H": 0.3,
       "floor_empirical": 0.6999999999999996,
       "liminf_empirical": 0.6999999999999995,
-      "runtime_s": 13.685633420944214,
+      "runtime_s": 15.40651273727417,
       "embed_info": {
         "embed_size": 65536,
         "min_eig": 0.4332610697498255,
@@ -104,7 +104,7 @@
       "H": 0.5,
       "floor_empirical": 0.6999999999999996,
       "liminf_empirical": 0.6999999999999995,
-      "runtime_s": 16.371118545532227,
+      "runtime_s": 15.862814664840698,
       "embed_info": {
         "embed_size": 65536,
         "min_eig": 0.24217493984703775,
@@ -168,7 +168,7 @@
       "H": 0.7,
       "floor_empirical": 0.6999999999999996,
       "liminf_empirical": 0.6999999999999995,
-      "runtime_s": 16.05156111717224,
+      "runtime_s": 16.061758756637573,
       "embed_info": {
         "embed_size": 65536,
         "min_eig": 0.14246714878226202,
@@ -257,7 +257,7 @@
       "H": 0.9,
       "floor_empirical": 0.6999999999999996,
       "liminf_empirical": 0.6999999999999995,
-      "runtime_s": 15.714246034622192,
+      "runtime_s": 15.973454713821411,
       "embed_info": {
         "embed_size": 65536,
         "min_eig": 0.08638551315860593,

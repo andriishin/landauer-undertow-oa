@@ -18,7 +18,7 @@ scans on a fixed window `[10³,10⁴]` left `B/(K/2) ≤ 0.43` and convergence o
 natural hypothesis is that the scan never entered the tracking regime
 `ε_track = I_rate·σ²/λ² ≪ 1`.
 
-This redesign tests that hypothesis **in the exact linear-Gaussian setting the
+This experiment tests that hypothesis **in the exact linear-Gaussian setting the
 theorem assumes** (so any failure is a property of the BNT log, not of a
 suboptimal softmax learner). Model: `K` independent scalar OU coordinates,
 Gaussian observations `y = θ + v` (`Var v = r`), and the **optimal Kalman

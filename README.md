@@ -2,21 +2,21 @@
 
 *([Русская версия](./README.ru.md))*
 
-Open-access materials for the article **«The Nostalgic Undertow: The Inevitability of Memory Obsolescence in Non-Stationary Landauer Regimes»** (Russian primary; English translation included), submitted to *Journal of Statistical Mechanics: Theory and Experiment* (IOP).
+Open-access materials for the article **«The Nostalgic Undertow: The Inevitability of Memory Obsolescence in Non-Stationary Environments»** (Russian primary; English translation included), submitted to *Journal of Physics A: Mathematical and Theoretical* (IOP).
 
-A system that learns about a changing world must store what it has learned, and — by Landauer's principle — storing memory costs energy. But the world keeps changing, so a stored memory gradually stops predicting anything useful while it still costs energy to keep. This growing burden of useless-but-still-paid-for memory is *informational nostalgia*, and the irreducible rate at which it drags the efficiency of memory toward zero is the *undertow*. The paper proves the undertow is **inevitable** for slowly drifting, mixing environments, no matter which of three escape routes a system attempts:
+A system that learns about a changing world must store what it has learned, and — by Landauer's principle — holding that memory costs energy. But the world keeps changing, so a stored memory gradually stops predicting anything useful while it is still paid for. This growing fraction of useless-but-still-paid-for memory is *informational nostalgia*, and the irreducible rate at which it drags the efficiency of memory toward zero is the *undertow*. The paper proves the undertow is **inevitable** for slowly drifting, mixing environments, by whatever route a system tries to escape:
 
 ```
-η_L = I_pred / N_max          (Landauer efficiency: predictive information / cumulative Landauer budget)
+η_v = I_pred / I_mem          (predictive efficiency: predictive information / total retained memory)
 ```
 
-- **Theorem 1** — tracking the world more accurately does not help (a no-go of realizability).
-- **Theorem 2** — refreshing memory faster leaves an irreducible nostalgia floor, the same for every mixing drift class.
-- **Theorem 3** — no finite polynomial capacity growth escapes; the only escaping regime, exponential growth, diverges in cost.
+- **Theorem 1** — tracking the world more accurately does not help (a no-go of realizability: the adiabatic tracking-cost logarithm is unattainable as an asymptotic slope).
+- **Theorem 2** — refreshing memory faster leaves an irreducible nostalgia floor, of the same depth for every mixing drift class.
+- **Theorem 3** — no finite polynomial capacity growth escapes: growing memory dilutes its predictive fraction, so η_v → 0; nostalgia itself stays below one (held at the Theorem-1 floor ν_C1 < 1), and even exponential growth pays a diverging cost.
 
-The three a-priori-independent routes reduce to two underlying mechanisms — a single structural impossibility. Each theorem carries a falsifiable prediction, confirmed by the reproducible simulations below.
+The three a-priori-independent routes fail for one underlying cause — *decorrelation*: under a changing environment old memory inevitably ceases to match the present. Memory obsolescence is thus a single structural impossibility, not three separate facts. Each theorem carries a falsifiable prediction, confirmed by the reproducible simulations below; all results are proved in the linear-Gaussian (adiabatic) approximation, and the inevitability is established for a theoretical, oracle-normalized measure of obsolescence.
 
-This is the third paper in a series on the Landauer efficiency of memory, after [andriishin/landauer-self-modeling-oa](https://github.com/andriishin/landauer-self-modeling-oa) (paper #1, the stationary scale) and [andriishin/landauer-nostalgia-oa](https://github.com/andriishin/landauer-nostalgia-oa) (paper #2, the non-stationary extension). **It is self-contained** — the inherited definitions are recapitulated in § 2; the reader does not need the earlier papers.
+This is the third paper in a series on the efficiency of memory, after [andriishin/landauer-self-modeling-oa](https://github.com/andriishin/landauer-self-modeling-oa) (paper #1, the stationary scale) and [andriishin/landauer-nostalgia-oa](https://github.com/andriishin/landauer-nostalgia-oa) (paper #2, the non-stationary extension). **It is self-contained** — the inherited definitions are recapitulated in § 2; the reader does not need the earlier papers.
 
 ## Contents
 
@@ -35,7 +35,8 @@ simulations/                                  Reproducible, deterministic numeri
   ou_adiab/             Ornstein-Uhlenbeck tracking (§ 6.1): the no-go of realizability for Theorem 1
   fou_floor/            Fractional OU (§ 6.2): nostalgia floor and the 4(1-H) drift-rate exponent
   psp_floor/            Piecewise-stationary Poisson reset (§ 6.3): nostalgia floor vs switching rate
-  superlinear_memory/   Super-linear memory (§ 6.4): the polynomial/exponential phase boundary
+  superlinear_memory/   Super-linear memory (§ 6.4): the polynomial/exponential phase boundary (η_v → 0)
+  superlinear_noncirc/  Non-circular test (§ S4.4a): the ν^theor plateau at the C1 floor ν_C1 < 1
 ```
 
 ## Reproducing the simulations

@@ -1,4 +1,4 @@
-"""iter-002 sim 3: `psp_floor` -- nostalgia floor for Poisson reset (Theorem 2, C2).
+"""sim 3: `psp_floor` -- nostalgia floor for Poisson reset (Theorem 2, C2).
 
 Article #3 (`landauer-undertow`) § 6 item 3 / supplementary § S4.3.
 
@@ -9,9 +9,9 @@ each reset theta is independently re-drawn from the stationary distribution
 the probability that a bit of age Delta has NOT seen a reset since being written
 is e^{-mu Delta} = e^{-Delta/tau_E}, so beta(Delta) = e^{-mu Delta}.
 
-REAL TRAJECTORY SIMULATION (iter-002 P0-A closure).  Earlier drafts computed
-nu(t) from the closed-form e^{-mu age} (tautological). This version actually
-SIMULATES the Poisson reset stream: each of the K logit coordinates carries a
+REAL TRAJECTORY SIMULATION.  Rather than computing nu(t) from the closed-form
+e^{-mu age} (which would be tautological), this code actually SIMULATES the
+Poisson reset stream: each of the K logit coordinates carries a
 realised reset clock; a memory bit written at time s remains predictive iff NO
 reset has occurred on its coordinate in (s, t]. The nostalgic fraction nu(t) and
 the floor are read out from the realised reset process, and the exponential
@@ -23,7 +23,10 @@ constant is invariant to mu at fixed c), and an exponential approach with
 realised time-scale ~ 1/mu -- the exponential end of the mixing class,
 complementary to the power-law end covered by `fou_floor`.
 
-With the true theta(t) known by construction, nu^theor = nu^op (S4.5).
+The tabulated per-bit nu is the operational per-bit majorant (the realised stale
+fraction of the threshold model), NOT nu^theor. For this C2 PSP sim that majorant
+IS the load-bearing result: the nostalgia floor ~ 1 - c (empirically 0.709-0.713
+at c = 0.30), invariant to the switching rate mu (S4.5).
 """
 
 from __future__ import annotations
@@ -47,7 +50,7 @@ MUS = [1e-3, 3e-3, 1e-2]          # Poisson switching intensities mu = 1/tau_E
 C_TARGET = 0.30                   # target fresh fraction -> floor 1 - c = 0.70
 T_TOTAL = 20_000
 N_RUNS = 40
-SEED = 20260524 + 4               # iter-002 offset
+SEED = 20260524 + 4               # offset seed
 MEASURE_EVERY = 50
 M_BITS = 400                      # FIFO memory size (snapshot bits)
 N_BOOT = 400
@@ -188,7 +191,7 @@ def main() -> None:
         log_lines.append(msg)
 
     floor = 1.0 - C_TARGET
-    log("== iter-002 sim 3: psp_floor -- nostalgia floor for Poisson reset (Theorem 2) ==")
+    log("== sim 3: psp_floor -- nostalgia floor for Poisson reset (Theorem 2) ==")
     log("REAL trajectory simulation: Poisson reset streams simulated; nu(t), floor and")
     log("decorrelation rate read from the realised survival of stored bits (no formula re-fit).")
     log(f"k = {K_STATES}, K = {K_PARAMS}, mus = {MUS}")
@@ -268,7 +271,7 @@ def main() -> None:
 
     # ---------------- summaries ----------------
     summary = {
-        "experiment": "iter-002 sim3 psp_floor: REALISED-reset nostalgia floor for Poisson reset (Theorem 2)",
+        "experiment": "sim3 psp_floor: REALISED-reset nostalgia floor for Poisson reset (Theorem 2)",
         "method": "Poisson reset streams simulated per coordinate; nu(t), floor and decorrelation rate read from realised bit survival (no closed-form re-fit)",
         "k": K_STATES, "K_params": K_PARAMS, "mus": MUS,
         "c_target": C_TARGET, "floor_theory": floor,
@@ -282,7 +285,7 @@ def main() -> None:
         json.dumps(summary, indent=2, ensure_ascii=False))
 
     with (HERE / "results_summary.txt").open("w", encoding="utf-8") as f:
-        f.write("=== iter-002 sim3: psp_floor -- REALISED-reset nostalgia floor (Theorem 2) ===\n")
+        f.write("=== sim3: psp_floor -- REALISED-reset nostalgia floor (Theorem 2) ===\n")
         f.write("Poisson reset streams simulated; nu(t), floor and decorrelation rate read\n")
         f.write("from the realised survival of stored bits (NOT the closed-form e^{-mu age}).\n")
         f.write(f"k = {K_STATES}, K = {K_PARAMS}, M = {M_BITS}\n")

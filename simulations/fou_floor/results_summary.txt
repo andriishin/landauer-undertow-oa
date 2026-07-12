@@ -1,4 +1,4 @@
-=== iter-007 sim2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ===
+=== sim2: fou_floor -- EXACT stationary fOU (Theorem 2, C2) ===
 Direct spectral generation of the stationary fOU:
   circulant eigenvalues = folded discrete PSD S(w)~|w|^{1-2H}/(lambda^2+w^2)
   (>=0 by construction -> PD embedding, ZERO clipping);
@@ -9,7 +9,7 @@ empirical-ACF exponent (accessible window) with bootstrap CI.
 k = 8, K = 56, tau_E = 200.0, M_bits = 400
 c_target = 0.3, theory floor 1-c = 0.700
 T_total = 20000, path_len = 32768, circulant M = 65536, N_runs = 40, seed = 20260527, n_fold = 6
-total runtime 61.8s
+total runtime 63.5s
 
 FLOOR (C2 carrying result):
     H   floor_emp     liminf      min_eig    n_neg
@@ -34,5 +34,5 @@ H=0.9 -> 0.41 / 0.39 (analytic 0.40). It is NOT isolated in the original
 [tau_E,8tau_E] window (OU corner: 1.62/0.46) nor by the finite-sample
 sample-ACF estimator (estimator bias at large lags: 2.44/1.40). 4(1-H)
 is thus an ASYMPTOTIC far-tail exponent of the TRUE fOU -- confirmed on
-the correct process; the iter-006 failure was the AR(1) o fGn SURROGATE,
+the correct process; a naive AR(1) o fGn SURROGATE would fail here,
 not the theory. Floor depth 1-c invariant (0.700 for all H, spread 0).

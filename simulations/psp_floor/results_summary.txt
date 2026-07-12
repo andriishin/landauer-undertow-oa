@@ -1,10 +1,10 @@
-=== iter-002 sim3: psp_floor -- REALISED-reset nostalgia floor (Theorem 2) ===
+=== sim3: psp_floor -- REALISED-reset nostalgia floor (Theorem 2) ===
 Poisson reset streams simulated; nu(t), floor and decorrelation rate read
 from the realised survival of stored bits (NOT the closed-form e^{-mu age}).
 k = 8, K = 56, M = 400
 c_target = 0.3, theory floor 1-c = 0.700
 T_total = 20000, N_runs = 40, seed = 20260528
-total runtime 26.3s
+total runtime 26.0s
 
         mu     tau_E   floor_emp     liminf     emp_rate                    95% CI   nominal mu
  1.000e-03      1000      0.7127     0.6982   1.0103e-03     [9.845e-04,1.039e-03]    1.000e-03
